@@ -119,58 +119,58 @@ def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples,
     count = 0
 
     # 创建 5 种不同任务的 prompts
-    object_property_description = [{
-        "object_property_description_0": ["Describe the physical properties of the object in the video <video_start>", "<video_tokens>", "<video_end>."],
-        "object_property_description_1": ["How does the object in this tactile video <video_start>", "<video_tokens>", "<video_end> feel?"],
-        "object_property_description_2": ["Can you detail the surface characteristics shown in this video <video_start>", "<video_tokens>", "<video_end>?"],
-        "object_property_description_3": ["What are the tactile features of the object presented in the video <video_start>", "<video_tokens>", "<video_end>?"],
+    tactile_feature_assessment = [{
+        "tactile_feature_assessment_0": ["Describe the physical properties of the object in the video <video_start>", "<video_tokens>", "<video_end>."],
+        "tactile_feature_assessment_1": ["How does the object in this tactile video <video_start>", "<video_tokens>", "<video_end> feel?"],
+        "tactile_feature_assessment_2": ["Can you detail the surface characteristics shown in this video <video_start>", "<video_tokens>", "<video_end>?"],
+        "tactile_feature_assessment_3": ["What are the tactile features of the object presented in the video <video_start>", "<video_tokens>", "<video_end>?"],
     }]
 
-    property_comparison = [{
-        "property_comparison_more_0": ["I have tactile videos of two objects. Which one is <more_property>? <video_start>", "<video_tokens>", "<video_end> <video_start>", "<video_tokens>", "<video_end>"],
-        "property_comparison_less_0": ["I have tactile videos of two objects. Which one is <less_property>? <video_start>", "<video_tokens>", "<video_end> <video_start>", "<video_tokens>", "<video_end>"],
-        "property_comparison_more_1": ["Between these two videos, <video_start>", "<video_tokens>", "<video_end> and <video_start>", "<video_tokens>", "<video_end>, which object feels <more_property>?"],
-        "property_comparison_less_1": ["Comparing the objects in <video_start>", "<video_tokens>", "<video_end> and <video_start>", "<video_tokens>", "<video_end>, which one is <less_property>?"],
-        "property_comparison_more_desc_0": ["Is the object in the first video <video_start>", "<video_tokens>", "<video_end> <more_property> than the one in the second video <video_start>", "<video_tokens>", "<video_end>? Describe both objects before answering."],
-        "property_comparison_less_desc_0": ["Is the object in the first video <video_start>", "<video_tokens>", "<video_end> <less_property> than the one in the second video <video_start>", "<video_tokens>", "<video_end>? Describe both objects before answering."],
+    surface_feature_distinction = [{
+        "surface_feature_distinction_more_0": ["I have tactile videos of two objects. Which one is <more_property>? <video_start>", "<video_tokens>", "<video_end> <video_start>", "<video_tokens>", "<video_end>"],
+        "surface_feature_distinction_less_0": ["I have tactile videos of two objects. Which one is <less_property>? <video_start>", "<video_tokens>", "<video_end> <video_start>", "<video_tokens>", "<video_end>"],
+        "surface_feature_distinction_more_1": ["Between these two videos, <video_start>", "<video_tokens>", "<video_end> and <video_start>", "<video_tokens>", "<video_end>, which object feels <more_property>?"],
+        "surface_feature_distinction_less_1": ["Comparing the objects in <video_start>", "<video_tokens>", "<video_end> and <video_start>", "<video_tokens>", "<video_end>, which one is <less_property>?"],
+        "surface_feature_distinction_more_desc_0": ["Is the object in the first video <video_start>", "<video_tokens>", "<video_end> <more_property> than the one in the second video <video_start>", "<video_tokens>", "<video_end>? Describe both objects before answering."],
+        "surface_feature_distinction_less_desc_0": ["Is the object in the first video <video_start>", "<video_tokens>", "<video_end> <less_property> than the one in the second video <video_start>", "<video_tokens>", "<video_end>? Describe both objects before answering."],
     }]
 
-    property_superlative_selection = [{
-        "property_superlative_selection_most_0": ["Given three tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe each object and then select the <most_property> one."],
-        "property_superlative_selection_least_0": ["Given these tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe each object and then select the <least_property> one."],
-        "property_superlative_selection_most_1": ["You have tactile videos of three objects: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Which object is the <most_property>? Please describe all three first."],
-        "property_superlative_selection_least_1": ["Among these three videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>, identify the <least_property> object after describing each one."],
+    surface_optimality_identification = [{
+        "surface_optimality_identification_most_0": ["Given three tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe each object and then select the <most_property> one."],
+        "surface_optimality_identification_least_0": ["Given these tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe each object and then select the <least_property> one."],
+        "surface_optimality_identification_most_1": ["You have tactile videos of three objects: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Which object is the <most_property>? Please describe all three first."],
+        "surface_optimality_identification_least_1": ["Among these three videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>, identify the <least_property> object after describing each one."],
     }]
 
-    property_object_match = [{
-        "property_object_match_0": ["Given three tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe the object in each video, then match each video (a, b, c) to one of the following objects in alphabetical order: "],
-        "property_object_match_1": ["You have tactile videos of three different objects: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. First, describe the properties shown in each video. Then, assign each video (a, b, c) to one of these objects listed alphabetically: "],
+    object_sensation_correlation = [{
+        "object_sensation_correlation_0": ["Given three tactile videos: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. Describe the object in each video, then match each video (a, b, c) to one of the following objects in alphabetical order: "],
+        "object_sensation_correlation_1": ["You have tactile videos of three different objects: a) <video_start>", "<video_tokens>", "<video_end>, b) <video_start>", "<video_tokens>", "<video_end>, c) <video_start>", "<video_tokens>", "<video_end>. First, describe the properties shown in each video. Then, assign each video (a, b, c) to one of these objects listed alphabetically: "],
     }]
 
 
     if split == "train":
         property_questions = {
-            f"{split}_surface_feature_distinction": property_comparison,
-            f"{split}_surface_optimality_identification": property_superlative_selection,
-            f"{split}_object_sensation_correlation": property_object_match,
+            f"{split}_surface_feature_distinction": surface_feature_distinction,
+            f"{split}_surface_optimality_identification": surface_optimality_identification,
+            f"{split}_object_sensation_correlation": object_sensation_correlation,
         }
         if use_properties: 
-             property_questions[f"{split}_tactile_feature_assessment"] = object_property_description
+             property_questions[f"{split}_tactile_feature_assessment"] = tactile_feature_assessment
     elif split == "eval":
         property_questions = {
-            f"{split}_tactile_feature_assessment": object_property_description,
-            f"{split}_surface_feature_distinction": property_comparison,
-            f"{split}_surface_optimality_identification": property_superlative_selection,
-            f"{split}_object_sensation_correlation": property_object_match,
+            f"{split}_tactile_feature_assessment": tactile_feature_assessment,
+            f"{split}_surface_feature_distinction": surface_feature_distinction,
+            f"{split}_surface_optimality_identification": surface_optimality_identification,
+            f"{split}_object_sensation_correlation": object_sensation_correlation,
         }
     else: 
         property_questions = {
-            f"{split}_surface_feature_distinction": property_comparison,
-            f"{split}_surface_optimality_identification": property_superlative_selection,
-            f"{split}_object_sensation_correlation": property_object_match,
+            f"{split}_surface_feature_distinction": surface_feature_distinction,
+            f"{split}_surface_optimality_identification": surface_optimality_identification,
+            f"{split}_object_sensation_correlation": object_sensation_correlation,
         }
         if use_properties:
-             property_questions[f"{split}_tactile_feature_assessment"] = object_property_description
+             property_questions[f"{split}_tactile_feature_assessment"] = tactile_feature_assessment
 
 
  
@@ -400,7 +400,7 @@ def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples,
                     vector = tuple(RANKS[prop][sample] for prop in properties_to_check)
                     property_vectors.append(vector)
                 except KeyError as e:
-                    print(f"Warning: Missing rank for object {e} in property_object_match. Skipping sample.")
+                    print(f"Warning: Missing rank for object {e} in object_sensation_correlation. Skipping sample.")
                     retries += 1 
                     property_vectors = None 
                     break
