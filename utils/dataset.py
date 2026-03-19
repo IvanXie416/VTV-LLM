@@ -1,22 +1,20 @@
-import pickle 
-import torch 
-from torch.utils.data import Dataset
-import numpy as np
 import os
-import ast
-import csv
-import natsort
-from PIL import Image
-from torchvision import transforms
-import random
 import json
-from transformers import VideoMAEImageProcessor
-import cv2 
-from .constants_video import TRAIN_OBJECTS, VAL_OBJECTS, TEST_OBJECTS, HARDNESS_MAP, PROTRUSION_MAP, ELASTICITY_MAP, FRICTION_MAP, RANKS
+import random
+
+import cv2
+import numpy as np
+import torch
+from torch.utils.data import Dataset
+from PIL import Image
+
+from .constants_video import RANKS, TEST_OBJECTS, TRAIN_OBJECTS, VAL_OBJECTS
 
 
 def get_frames_videomae(video_path, video_processor, max_length=16, return_indices=False):
-    
+    if not os.path.exists(video_path):
+        raise FileNotFoundError(f"Video file does not exist: {video_path}")
+
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise IOError(f"Cannot open video file: {video_path}")
@@ -51,25 +49,23 @@ def get_frames_videomae(video_path, video_processor, max_length=16, return_indic
 
         current_frame_idx += 1
 
-    cap.release() # Release video capture object
+    cap.release()
 
     num_read_frames = len(video_frames)
     if num_read_frames == 0:
         raise ValueError(f"Cannot read any frames from video: {video_path}. Please check the file.")
 
-    # Repeat last frame to reach max_length
     if num_read_frames < max_length:
-        print(f"  Insufficient frames, copying last frame ({num_read_frames} < {max_length})")
         last_frame = video_frames[-1]
         last_index = sampled_indices_actual[-1]
         for _ in range(max_length - num_read_frames):
             video_frames.append(last_frame)
-            sampled_indices_actual.append(last_index) 
+            sampled_indices_actual.append(last_index)
 
 
     processed_output = video_processor(video_frames, return_tensors="pt")
-    pixel_values = processed_output.pixel_values # (1, num_frames, C, H, W)
-    pixel_values = pixel_values.squeeze(0) # (num_frames, C, H, W)
+    pixel_values = processed_output.pixel_values
+    pixel_values = pixel_values.squeeze(0)
 
 
     if return_indices:
@@ -154,14 +150,14 @@ class TactileLLMDataset(Dataset):
         self.bos_token = tokenizer.bos_token
         self.eos_token = tokenizer.eos_token
         self.pad_token = tokenizer.pad_token
-        self.eos_token_number = self.tokenizer.encode(self.eos_token)
         self.video_processor = video_processor
-        self.samples = None
-        all_files = []
+        all_samples = []
         for file in files:
-            with open(file, 'r') as f:
-                all_files += json.load(f)
-        self.samples = all_files
+            if not os.path.exists(file):
+                raise FileNotFoundError(f"{split_name} file not found: {file}")
+            with open(file, "r") as f:
+                all_samples.extend(json.load(f))
+        self.samples = all_samples
 
     def __len__(self):
         return len(self.samples)
@@ -180,12 +176,15 @@ class TactileLLMDataset(Dataset):
             tactile_paths += s["video"]
         question += ["ASSISTANT: "]
         answer = "".join(sample[-1]["content"])
-        answer_tokens = torch.tensor(self.tokenizer.encode(answer + f'{self.eos_token}'), dtype=torch.int64)[1:]
+        answer_token_ids = self.tokenizer.encode(answer + f"{self.eos_token}", add_special_tokens=False)
+        answer_tokens = torch.tensor(answer_token_ids, dtype=torch.int64)
 
         all_tactile_pixel_values = []
         all_indices = []
         for t_path in tactile_paths:
-            pixel_values, indices = get_frames_videomae(t_path, self.video_processor, max_length=16, return_indices=True)
+            pixel_values, indices = get_frames_videomae(
+                t_path, self.video_processor, max_length=16, return_indices=True
+            )
             all_tactile_pixel_values.append(pixel_values)
             all_indices.append(torch.tensor(indices, dtype=torch.long))
 

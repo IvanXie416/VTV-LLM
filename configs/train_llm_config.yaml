@@ -24,7 +24,7 @@ projection_path: null # stage2
 
 # LLM
 train_files: [vtvllm/vbts_video/train_qa.json]
-val_files: [vtvllm/vbts_video/val_opd_qa.json]
+val_files: [vtvllm/vbts_video/val_tfa_qa.json]
 test_files: [vtvllm/vbts_video/test_qa.json]
 model_type: qwen2.5-7b  
 cutoff_len: 512
@@ -59,15 +59,17 @@ warmup_steps: 0.03
 per_device_val_batch_size: 1
 ## generation
 max_new_tokens:
-  train_object_property_description: 100
-  train_object_description: 100
-  train_property_comparison: 200
-  train_property_superlative_selection: 200
-  train_property_object_match: 200
-  eval_object_property_description: 100
-  eval_property_comparison: 150
-  eval_property_superlative_selection: 200
-  eval_property_superlative_selection_most: 200
-  eval_property_superlative_selection_least: 200
-  eval_property_object_match: 200
-  eval_property_scenario_reasoning: 200
+  default: 200
+  train_tactile_feature_assessment: 120
+  train_surface_feature_distinction: 200
+  train_surface_optimality_identification: 220
+  train_object_sensation_correlation: 220
+  test_tactile_feature_assessment: 120
+  test_surface_feature_distinction: 200
+  test_surface_optimality_identification: 220
+  test_object_sensation_correlation: 220
+  eval_tactile_feature_assessment: 120
+  eval_surface_feature_distinction: 200
+  eval_surface_optimality_identification: 220
+  eval_object_sensation_correlation: 220
+  eval_tactile_scenario_analysis: 220

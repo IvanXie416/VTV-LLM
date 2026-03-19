@@ -1,24 +1,22 @@
 TRAIN_OBJECTS = [
-    'tangerine', 'carton', 'playingcard', 'huamei', 'ricespooninside', 'nectarine', 'tomato', 'rubberglove', 'penpad', 'cottoncloth',
+    'carton', 'playingcard', 'huamei', 'ricespooninside', 'nectarine', 'tomato', 'rubberglove', 'penpad', 'cottoncloth',
     'velvet', 'sandpaper', 'chipbag', 'remotebutton', 'rubberslippersole', 'candle', 'suede', 'silkscarf', 'fasciaball', 'chalk',
     'clay', 'candy', 'lemon', 'banana', 'kiwi', 'pineapple', 'plasticbottle', 'waffle', 'sponge', 'plasticbasket',
     'balloon', 'leatherglove', 'buildingblockprotrusion', 'jelly', 'pianokey', 'blanket', 'ceramiccup', 'ovenglove', 'bark', 'scouringpad',
     'fur', 'pinecone', 'pingpongball', 'gridbag', 'cork', 'woodenruler', 'eraser', 'velcro', 'leatherwallet', 'toiletpaper',
     'showermat', 'yogamat', 'golfball', 'stickynote', 'siliconepad', 'ridgeplasticbottle', 'maskingtape', 'rubberband', 'cottonball', 'gauze',
     'mouse', 'headphone', 'facetowel', 'wovenwatchstrap', 'rubberwatchstrap', 'metalwatchstrap', 'woodenblock', 'marble', 'clawinside', 'keyboard',
-    'toothbrushhead', 'vitamintable', 'ironclip', 'towel', 'absorbentcloth', 'wristguard', 'finebubblefilm', 'coarsebubblefilm', 'ironruler', 'ridgecup',
-    'key', 'screw', 'circuitboard', 'mold', 'spongesheet', 'wrench', 'screwknifehandle', 'aluminumtube', 'injectiontube', 'steelwool',
-    'orange', 'avocado', 'plasticbuildingblock', 'baseball', 'scissor', 'rice', 'tennisball', 'tape', 'hairpin', 'wire'
+    'toothbrushhead', 'vitamintable', 'towel', 'absorbentcloth', 'wristguard', 'finebubblefilm', 'coarsebubblefilm', 'ironruler', 'ridgecup',
+    'screw', 'circuitboard', 'mold', 'spongesheet', 'screwknifehandle', 'aluminumtube', 'injectiontube', 'steelwool',
+    'orange', 'avocado', 'plasticbuildingblock', 'baseball', 'scissor', 'rice', 'tennisball', 'tape', 'hairpin'
 ]
 
 VAL_OBJECTS = [
-    'avocado', 'aluminumtube', 'bark', 'candy', 'circuitboard', 'facetowel', 'golfball', 'gridbag', 'hairpin', 'huamei',
-    'ironclip', 'key', 'kiwi', 'metalwatchstrap', 'rice', 'ricespooninside', 'rubberslippersole', 'wire', 'wrench', 'tangerine'
+    'ironclip', 'key', 'wire', 'wrench', 'tangerine'
 ]
 
 TEST_OBJECTS = [
-    'avocado', 'aluminumtube', 'bark', 'candy', 'circuitboard', 'facetowel', 'golfball', 'gridbag', 'hairpin', 'huamei',
-    'ironclip', 'key', 'kiwi', 'metalwatchstrap', 'rice', 'ricespooninside', 'rubberslippersole', 'wire', 'wrench', 'tangerine'
+    'ironclip', 'key', 'wire', 'wrench', 'tangerine'
 ]
 
 

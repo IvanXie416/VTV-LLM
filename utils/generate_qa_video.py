@@ -1,9 +1,13 @@
 import os
 import random
-from constants_video import *
 import json
 import argparse
 import copy 
+
+try:
+    from .constants_video import *
+except ImportError:
+    from constants_video import *
 
 
 def get_sample_description(sample, properties, use_unstructured):
@@ -67,13 +71,6 @@ def get_property_description_from_ranks(sample, properties):
 def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples, use_unstructured, use_properties):
     properties = ["hardness", "protrusion", "elasticity", "friction"]
 
-    property_names = {
-        "hardness": "hardness",
-        "protrusion": "protrusion",
-        "elasticity": "elasticity",
-        "friction": "friction"
-    }
-
     # prompt setup
     property_comparisons = {
         "hardness": {
@@ -107,7 +104,6 @@ def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples,
     for p in json_path:
         with open(p) as json_file:
             samples = json.load(json_file)
-            json_file.close()
         for k, v in samples.items():
             if k in all_samples.keys():
                 all_samples[k] += v
@@ -198,6 +194,7 @@ def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples,
         video_paths_for_data = [] 
         answer = "" 
         question_suffix = "" 
+        prop = None
 
         if question_type == f"{split}_tactile_feature_assessment":
             sample = random.choice(list(all_samples.keys()))
@@ -437,7 +434,7 @@ def generate_one_step_qa(start_prompt, json_path, data_path, split, num_samples,
 
         final_question = []
         video_token_count = 0
-        prop_defined = 'prop' in locals() 
+        prop_defined = prop is not None
 
         for chunk in question_template:
             if chunk == "<video_tokens>":
@@ -511,7 +508,6 @@ def generate_tfa_evaluation_qa(start_prompt, json_path, data_path, split, use_un
     # load samples
     with open(json_path) as json_file:
         samples = json.load(json_file)
-        json_file.close()
     
     all_data = []
     
@@ -579,7 +575,6 @@ def generate_tsa_evaluation_qa(start_prompt, json_path, data_path, num_samples, 
     for p in json_path:
         with open(p) as json_file:
             samples = json.load(json_file)
-            json_file.close()
         for k, v in samples.items():
             valid_videos = [video for video in v if video and isinstance(video, str) and os.path.exists(video)]
             if not valid_videos:
@@ -741,7 +736,10 @@ def generate_tsa_evaluation_qa(start_prompt, json_path, data_path, num_samples, 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_path', default='vtvllm', help='data root directory')
+    parser.add_argument('--seed', type=int, default=0, help='random seed')
     args = parser.parse_args()
+
+    random.seed(args.seed)
 
     use_unstructured = True
     use_tactile = True 

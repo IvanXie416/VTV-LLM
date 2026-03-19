@@ -10,8 +10,8 @@ Please refer to [environment.yaml](environment.yaml).
 The original video dataset can be downloaded from [huggingface](https://huggingface.co/datasets/Ivan416/VBTS_video).
 Then, run the following commands to generate the complete VTV150K dataset.
 ```
-python utils/process_dataset_video.py --dataset_path $your_path$ --output_path $your_path$
-python utils/generate_qa_video.py --data_path $your_path$
+python utils/process_dataset_video.py --dataset_path $your_path$ --output_path $your_path$ --seed 0
+python utils/generate_qa_video.py --data_path $your_path$ --seed 0
 ```
 
 ## Training
@@ -20,10 +20,9 @@ For Stage 1, you can download the pretrained VBTS video encoder from [huggingfac
 
 For Stage 2 and 3, you can modify the corresponding parameters in [train_llm_config.yaml](configs/train_llm_config.yaml), and then do training:
 ```
-python train_llm.py
+python train_llm.py --config configs/train_llm_config.yaml --exp_id stage2_run
 ```
 
-The complete version of the training and test code will be released as soon as possible.
 
 ## Citation
 If you find our work useful in your research, please consider citing:
